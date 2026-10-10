@@ -1,0 +1,11 @@
+{
+    "Number":  282,
+    "Message":  "- Make tray icons creation and update more robust to windows errors\r\n- Remove LHM\u0027s internal sensor value history to reduce memory usage\r\n- Fix some UI memory leaks\r\n- Make FanControl service tray icon mode work in non admin environnement\r\n- Make FanControl process ask for elevation when started from a non-interactive environnement\r\n- Fix a NvAPIWrapper bug",
+    "Checksums":  {
+                      "FanControl_4_8":  "EAD4E7A702BE17E80FC2F263C201567A",
+                      "FanControl_10_0":  "1B97D9789603DF7113A2DE972EB37131",
+                      "FanControl_4_8_Installer":  "E44460B15BA3B2FF8742F93AAABF2999",
+                      "FanControl_10_0_Installer":  "09255487B048C6646FE0D7F6DE4CA3DB",
+                      "Updater":  "F16A93B6839A4A119FD0C35EDFD9E291"
+                  }
+}

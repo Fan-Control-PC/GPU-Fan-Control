@@ -1,0 +1,81 @@
+name: Nightly release
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-nightly
+  cancel-in-progress: true
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GH_REPO: ${{ github.repository }}
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build-nsis:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: taiki-e/install-action@just
+
+      - name: Build lhm
+        run: just lhm
+
+      - run: rustup update
+      - uses: Swatinem/rust-cache@v2
+      - name: Build
+        run: |
+          CARGO_PACKAGER_FORMAT=nsis FAN_CONTROL_VERSION=nightly just build-release
+        shell: bash
+
+      - run: cargo install cargo-packager
+
+      - name: Package nsis
+        run: just nsis
+
+      - name: Upload nsis build
+        uses: actions/upload-artifact@v7
+        with:
+          name: fan-control-nsis
+          path: |
+            ./target/release/fan-control*-setup.exe
+
+  release-on-github:
+    needs:
+      - build-nsis
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+
+      # must be after checkout because it will remove artifacts
+      - uses: actions/download-artifact@v8
+        with:
+          merge-multiple: true
+          path: all-artifacts
+
+      - name: Display structure of downloaded files
+        run: find all-artifacts -type f | sort
+
+      - name: Set prerelease flag
+        if: ${{ github.event.inputs.prerelease == 'true' }}
+        run: |
+          echo "PRERELEASE=--prerelease" >> $GITHUB_ENV
+
+      - name: Publish release
+        run: |
+          # delete tag/release if needed
+          gh release delete nightly --yes || true
+          git push --delete origin nightly || true
+
+          git tag nightly
+          git push origin --tags
+
+          # https://cli.github.com/manual/gh_release_create
+          gh release create nightly  --title "nightly " \
+            --verify-tag --prerelease --generate-notes --target $GITHUB_SHA \
+            all-artifacts/*

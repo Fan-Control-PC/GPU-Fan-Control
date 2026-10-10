@@ -1,0 +1,3 @@
+theme = "Light"
+update_delay = 1500
+current_config = "test-locale"
